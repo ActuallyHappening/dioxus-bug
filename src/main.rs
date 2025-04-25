@@ -6,7 +6,7 @@ fn main() {
 
 #[component]
 fn App() -> Element {
-    let mut state = use_signal(|| String::new());
+    let mut state = use_signal(|| String::from("123"));
     rsx! {
       input {
         r#type: "text",
@@ -26,6 +26,12 @@ fn App() -> Element {
 
 #[component]
 fn Child(state: Signal<String>) -> Element {
+    tracing::info!("Child rendered");
+    use_effect(move || {
+        let current = state.cloned();
+        tracing::info!("Child state updated: {}", current);
+    });
+
     let num: u32 = state().parse::<u32>()?;
     rsx! {
       p { "Number parsed as {num}" }
