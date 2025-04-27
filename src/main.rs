@@ -31,6 +31,7 @@ fn Child(state: Signal<String>) -> Element {
         let current = state.cloned();
         tracing::info!("Child state updated: {}", current);
     });
+    use_drop(|| tracing::info!("Child dropped"));
 
     let num: u32 = state().parse::<u32>()?;
     rsx! {
